@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>はてブURL長さチェッカー</title>
+    <meta charset="utf-8" />
+    <meta name="description" content="Mediumに投稿した時のURLの長さが255文字以内かチェックするよ" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.css" />
+    <style>
+      .page-container {
+        margin-top: 2em;
+      }
+      .right.aligned {
+        text-align: right;
+      }
+      .center.aligned {
+        text-align: center;
+      }
+      .hidden {
+        display: none;
+      }
+      .result-message-url {
+        word-wrap: break-word;
+      }
+    </style>
+    <script language="javascript">
+
+      function showResultMessage(title, url, body) {
+        const elMessage = document.querySelector('div.result-message')
+        const elTitle = document.querySelector('div.result-message-title')
+        const elUrl = document.querySelector('p.result-message-url')
+        const elBody = document.querySelector('p.result-message-body')
+        elMessage.classList.remove('hidden')
+        elTitle.innerText = title
+        elUrl.innerText = url
+        elBody.innerText = body
+      }
+
+      function checkUrl (form) {
+        const domain = form.querySelector('input[name="domain"]').value
+        const title = form.querySelector('input[name="title"]').value
+        const baseUrl = 'https://' + domain + '/'
+        const contentId = '3f30f4e1e479'
+        const escapedTitle = encodeURIComponent(title)
+        const url = baseUrl + escapedTitle + '-' + contentId
+        let message = '文字数は ' + url.length + '。'
+        if (url.length > 255) {
+          message += '文字数オーバー！'
+        } else {
+          message += 'セーフ！'
+        }
+
+        showResultMessage('結果', url, message)
+        return false
+      }
+    </script>
+  </head>
+  <body>
+    <div class="ui text container page-container">
+      <h1 class="ui header">
+        はてブURL長さチェッカー
+        <div class="sub header">
+          Mediumに投稿した時のURLの長さが255文字以内かチェックするよ
+        </div>
+      </h1>
+      <div class="ui message hidden result-message">
+        <div class="header result-message-title">
+          Title
+        </div>
+        <p class="result-message-url">
+          body
+        </p>
+        <p class="result-message-body">
+          body
+        </p>
+      </div>
+      <div class="ui segment">
+        <form onsubmit="return checkUrl(this)" class="ui form">
+          <div class="field">
+            <label>ドメイン名</label>
+            <input type="text" name="domain" placeholder="www.example.com" />
+          </div>
+          <div class="field">
+            <label>タイトル</label>
+            <input type="text" name="title" placeholder="すっごい記事" />
+          </div>
+          <div class="field right aligned">
+            <button type="submit" class="ui primary button">チェック</button>
+          </div>
+        </form>
+      </div>
+      <div class="ui divider"></div>
+      <div class="center aligned">
+        Copyright 2017 <a href='https://twitter.com/craftzdog'>@craftzdog</a>
+      </div>
+    </div>
+  </body>
+</html>
